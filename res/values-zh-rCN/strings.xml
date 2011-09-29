@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="hello">Hello World, GoDMActivity!</string>
+	<string name="app_name">3Q文件浏览器</string>
+	<string name="dmtitle"></string>
+	<string name="dbclickmsg">再按一次退出程序</string>
+	<string name="can_not_open_file">打开文件出错</string>
+	<string name="can_not_find_a_suitable_program_to_open_this_file">没找到适合打开这个文件的程序</string>
+</resources>
