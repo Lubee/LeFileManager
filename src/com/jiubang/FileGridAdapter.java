@@ -2,14 +2,11 @@ package com.jiubang;
 
 import android.widget.TextView;
 
-import com.jiubang.GoDMActivity.FileData;
-
 public class FileGridAdapter extends FileListAdapter
 			implements FileAdapter{
 
 	public FileGridAdapter(GoDMActivity context, FileData infos, int style) {
 		super(context, infos, style);
-		// TODO Auto-generated constructor stub
 	}
 	protected void setViewExceptIcon(Viewholder holder, FileInfo fInfo) {
 		TextView tv = holder.getName();
@@ -18,17 +15,15 @@ public class FileGridAdapter extends FileListAdapter
 	}
 	@Override
 	public int getIconId() {
-		// TODO Auto-generated method stub
-		return R.id.gridicon;
+		return R.id.gridimg;
 	}
 	@Override
 	public int getFileNameTextId() {
-		// TODO Auto-generated method stub
 		return R.id.gridname;
 	}
 	@Override
 	public int getLayoutId() {
-		return R.layout.gridfileitem;
+		return R.layout.file_griditem;
 	}
 	protected final int getStartSelfUpdateCount() { return 19;}
 }

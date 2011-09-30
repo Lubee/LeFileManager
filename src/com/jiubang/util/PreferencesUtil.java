@@ -10,7 +10,7 @@ import android.content.SharedPreferences;
  * @author ningguangyao
  * 
  */
-public class Preferences {
+public class PreferencesUtil {
 
   private static final String MODE = "file_mode";
 
@@ -23,12 +23,12 @@ public class Preferences {
   }
 
   public static int getMode() {
-    int mode = prefs.getInt(Preferences.MODE, 0);
+    int mode = prefs.getInt(PreferencesUtil.MODE, 0);
     return mode;
   }
 
   public static int getVisibilityToolBar() {
-    int mode = prefs.getInt(Preferences.TOOLBARVISIBILITY, 0);
+    int mode = prefs.getInt(PreferencesUtil.TOOLBARVISIBILITY, 0);
     return mode;
   }
 
@@ -36,14 +36,14 @@ public class Preferences {
     if (mode == -1) {
       throw new IllegalArgumentException();
     }
-    put(Preferences.MODE, mode);
+    put(PreferencesUtil.MODE, mode);
   }
 
   public static void putVisibilityToolBar(int toolbarVisibility) {
     if (toolbarVisibility == -1) {
       throw new IllegalArgumentException();
     }
-    put(Preferences.TOOLBARVISIBILITY, toolbarVisibility);
+    put(PreferencesUtil.TOOLBARVISIBILITY, toolbarVisibility);
   }
 
   private static void put(String name, Object value) {

@@ -89,8 +89,7 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
   protected int style;
 
   public FileListAdapter(GoDMActivity context, FileData info, int style) {
-    // this.context = context;
-    fileManager = (GoDMActivity) context;
+    fileManager =  context;
     fData = info;
     if (fData == null)
       fData = new FileData(new ArrayList<FileListAdapter.FileInfo>(), null, GoDMActivity.SDROOT);
@@ -101,7 +100,7 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
     phSize = (PHO_DIP * (int) (PIX_SCALE + 0.5f));
     inflater = LayoutInflater.from(context);
     this.style = style;
-    initFileBitmap(style);
+
   }
 
   private static final int HANDLER_SET_ICON_IMAGE = 0;
@@ -144,14 +143,12 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
   };
 
   /**
-   * public void setCurrenPath(String p) { fData.path = p;} public FileData
-   * getData(){return fData;} public void setData(FileData data) {fData = data;}
-   * public void setListView(AbsListView listView) { this.listView = listView;}
-   * /** Initialize file icon for fit size {@code Bitmap}
-   * */
-  private void initFileBitmap(int type) {
-    // if (res == null || dDirectory != null)
-    // return;
+   * 
+   * @param type
+   */
+  public void initFileBitmap(int type) {
+//    if (res == null || dDirectory != null)
+//      return;
     dDirectory = res.getDrawable(R.drawable.folder_32 + type);
     dTxt = res.getDrawable(R.drawable.text_32 + type);
     dHtm = res.getDrawable(R.drawable.html_32 + type);
@@ -173,8 +170,7 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
 
   @Override
   public Object getItem(int position) {
-
-    return position;
+    return fData.fileInfos.get(position);
   }
 
   @Override
@@ -402,6 +398,7 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
     }
 
   }
+
   private void update(FileInfo fInfo) {
 
     View v = fInfo.getView();
@@ -414,6 +411,7 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
     }
     getAndInitlizeIconObject(fInfo);
   }
+
   public final void clearUpdateData() {
     acquireCount = 0;
     while (updateSem.tryAcquire())
@@ -530,7 +528,7 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
       break;
     }
     fInfo.setDrawble(d);
-    ImageView i= ((Viewholder)fInfo.getView().getTag()).getIcon(getIconId());
+    ImageView i = ((Viewholder) fInfo.getView().getTag()).getIcon(getIconId());
     if (i == null) {
       return null;
     }
@@ -569,7 +567,7 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
     public FileInfo(String path) {
       File file = new File(path);
       this.name = file.getName();
-      this.desc = Util.getDesc(file);
+      this.desc = FileUtil.getDesc(file);
       this.size = String.valueOf(Util.fileSize(file.length()));
 
       this.type = FileUtil.switchIcon(file);
@@ -650,7 +648,6 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
 
     @Override
     public int compareTo(FileInfo another) {
-      // TODO Auto-generated method stub
       if (another.directory) {
         if (!directory)
           return 1;

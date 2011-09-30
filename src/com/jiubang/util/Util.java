@@ -68,28 +68,4 @@ public class Util {
     return result;
   }
 
-  
-  public static String getDesc(File file){
-    StringBuffer str =new StringBuffer("|");
-    /**
-     * 文件夹就计算修改时间，如果是文件就计算大小
-     */
-    if( file.isFile()){
-      String[] size = fileSize(file.length());
-      str.append(size[0]).append(size[1]).append(" |");
-    }
-    long time = file.lastModified();
-    str.append(getLong2Date(time));
-    str.append(" |").append(file.canRead()? 'r':'-').append(file.canWrite()?'w':'-');
-    return str.toString();
-  }
-  
-  public static String getLong2Date(long time){
-    if(time<=0){
-      time = System.currentTimeMillis();
-    }
-    SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd");
-    Date date = new Date(time);
-    return sdf.format(date);
-  }
 }
