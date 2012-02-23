@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Semaphore;
 
-import com.jiubang.util.FileUtil;
-import com.jiubang.util.Util;
-
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -32,6 +29,9 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.jiubang.util.FileUtil;
+import com.jiubang.util.Util;
 
 /**
  * File item adapter for listview
@@ -110,7 +110,7 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
     public void handleMessage(Message msg) {
       switch (msg.what) {
       case HANDLER_SET_ICON_IMAGE:
-        if (msg.arg1 > getCount())
+        if (msg.arg1 > getCount()|| msg.arg1<0)
           return;
         FileInfo info = fData.fileInfos.get(msg.arg1);
         View v = info.getView();
@@ -147,8 +147,8 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
    * @param type
    */
   public void initFileBitmap(int type) {
-//    if (res == null || dDirectory != null)
-//      return;
+    if (res == null || dDirectory != null)
+      return;
     dDirectory = res.getDrawable(R.drawable.folder_32 + type);
     dTxt = res.getDrawable(R.drawable.text_32 + type);
     dHtm = res.getDrawable(R.drawable.html_32 + type);
@@ -157,10 +157,10 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
     dPhoto = res.getDrawable(R.drawable.format_picture_32 + type);
     dApk = res.getDrawable(R.drawable.format_app_32 + type);
     dZip = res.getDrawable(R.drawable.zip_icon_32 + type);
-    dUnknow = res.getDrawable(R.drawable.file_32 + type);
     dWord = res.getDrawable(R.drawable.word_32 + type);
     dPdf = res.getDrawable(R.drawable.pdf_32 + type);
     dChm = res.getDrawable(R.drawable.chm_32 + type);
+    dUnknow = res.getDrawable(R.drawable.file_32 + type);
   }
 
   @Override
@@ -213,7 +213,7 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
     if (icon == null) {
       updateInfos.add(fInfo);
       updateSem.release();
-      update(fInfo);
+      //update(fInfo);
     } else {
       iv.setImageDrawable(icon);
     }
@@ -506,20 +506,19 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
       }
       break;
     case PHOTO:
-      BitmapFactory.Options opt = new BitmapFactory.Options();
-
+      BitmapFactory.Options opt = new BitmapFactory.Options(); 
+      
       opt.inPreferredConfig = Bitmap.Config.RGB_565;
       opt.inJustDecodeBounds = true;
       BitmapFactory.decodeFile(fInfo.path(), opt);
       opt.inJustDecodeBounds = false;
-      // Log.d(tag, "phSize: " + phSize + " pix_scale: " + PIX_SCALE);
+      //Log.d(tag, "phSize: " + phSize + " pix_scale: " + PIX_SCALE);
       if (opt.outWidth > opt.outHeight) {
-        opt.inSampleSize = opt.outWidth / phSize;
-        ;
+        opt.inSampleSize = opt.outWidth / phSize;;
       } else {
         opt.inSampleSize = opt.outHeight / phSize;
       }
-      Bitmap b = BitmapFactory.decodeFile(fInfo.path(), opt);
+      Bitmap b =  BitmapFactory.decodeFile(fInfo.path(), opt);
       d = new BitmapDrawable(res, b);
       bitmaps.add(b);
       break;
@@ -528,11 +527,6 @@ public class FileListAdapter extends BaseAdapter implements FileAdapter {
       break;
     }
     fInfo.setDrawble(d);
-    ImageView i = ((Viewholder) fInfo.getView().getTag()).getIcon(getIconId());
-    if (i == null) {
-      return null;
-    }
-    i.setImageDrawable(d);
     return d;
   }
 

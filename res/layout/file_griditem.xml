@@ -7,7 +7,7 @@
          <ImageView   
                android:layout_height="48dp"   
                android:id="@+id/gridimg"   
-               android:src="@drawable/chm_48"
+               android:src="@drawable/icon"
                android:layout_width="48dp"   
                android:layout_centerHorizontal="true">   
          </ImageView>  
@@ -18,7 +18,6 @@
                android:maxWidth="100dp"
                android:textSize="14sp"		
                android:textColor="#fff"	  
-               android:text="ddsd"
                android:singleLine="true"
                android:layout_centerHorizontal="true"   
                android:id="@+id/gridname">  

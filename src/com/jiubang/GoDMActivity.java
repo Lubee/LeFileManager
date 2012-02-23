@@ -209,30 +209,40 @@ public class GoDMActivity extends Activity implements OnItemClickListener {
    * @param path
    */
   private void initItems(String path) {
+    //setCurrentData(path);
     if (mode == 0) {
       itemlist.setVisibility(View.VISIBLE);
       itemgrid.setVisibility(View.GONE);
       modeBtn.setImageResource(R.drawable.toolbar_mode_list);
+      //refreshListItems();
     } else {
       itemlist.setVisibility(View.GONE);
       itemgrid.setVisibility(View.VISIBLE);
       modeBtn.setImageResource(R.drawable.toolbar_mode_icon);
+      //refreshGridItems();
     }
     refreshItems(path);
+    //fileAdapterList.notifyDataSetChanged();
   }
 
   private void refreshItems(String path) {
+    setCurrentData(path);
     if (mode == 0) {
-      refreshListItems(path);
+      refreshListItems();
     } else {
-      refreshGridItems(path);
+      refreshGridItems();
     }
+    fileAdapterList.notifyDataSetChanged();
   }
 
-  private void refreshListItems(String path) {
-    exitFlag = false;
+  private void setCurrentData(String path) {
     findFileInfo(path, fInfos);
     currentData = new FileData(fInfos, null, path);
+  }
+
+  private void refreshListItems() {
+    exitFlag = false;
+
     fileAdapterList = new FileListAdapter(this, currentData, mode);
     itemlist.setAdapter(fileAdapterList);
     itemlist.setSelection(index);
@@ -240,10 +250,8 @@ public class GoDMActivity extends Activity implements OnItemClickListener {
     setTitle();
   }
 
-  private void refreshGridItems(String path) {
+  private void refreshGridItems() {
     exitFlag = false;
-    findFileInfo(path, fInfos);
-    currentData = new FileData(fInfos, null, path);
     fileAdapterList = new FileGridAdapter(this, currentData, mode);
     itemgrid.setAdapter(fileAdapterList);
     itemgrid.setSelection(index);
@@ -260,6 +268,7 @@ public class GoDMActivity extends Activity implements OnItemClickListener {
 
     synchronized (list) {
       list.clear();
+      
       File base = new File(path);
       File[] files = base.listFiles();
       if (files == null || files.length == 0)
@@ -448,7 +457,7 @@ public class GoDMActivity extends Activity implements OnItemClickListener {
     if (type != null) {
       intent.setDataAndType(uri, type);
       try {
-        startActivityForResult(intent, 1);
+        startActivity(intent);
       } catch (ActivityNotFoundException e) {
         Toast.makeText(this, getString(R.string.can_not_open_file), Toast.LENGTH_SHORT).show();
       }
